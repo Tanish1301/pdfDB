@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<script>
+  function setPdfPreview(fileId) {
+    var pdfPreview = document.getElementById('pdf-preview');
+    pdfPreview.src = '/preview/' + fileId;
+  }
+</script>
+<style>
+  /* Add some basic styling to the page */
+  body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h2, h3 {
+    margin: 20px 0;
+  }
+
+  /* Style the table */
+  table {
+    border-collapse: collapse;
+    width: 50%;
+    float: left;
+  }
+
+  th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  /* Style the buttons */
+  .btn {
+    display: inline-block;
+    border: 1px solid #4caf50;;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: white;
+    background-color: #4caf50;
+    cursor: pointer;
+  }
+
+  /* Style the iframe */
+  #pdf-preview {
+    width: 45%;
+    height: 900px;
+    border: none;
+    float: right;
+  }
+</style>
+
+</head>
+<h2>Success</h2>
+
+<h3>Uploaded files:</h3>
+<ul>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+    {% for file_name in file_names %}
+    <tr>
+      <td>{{ file_name[1] }}</td>
+      <td>
+        <button type="button" class="btn btn-secondary" onclick="setPdfPreview({{ file_name[0] }}); return false;">Preview</button>
+        <form action="/download/{{ file_name[0] }}" method="GET">
+          <input type="submit" class="btn" value="Download">
+        </form>
+        <!-- Add a new form to view the summary text -->
+        <form action="/view_summary/{{ file_name[0] }}" method="GET">
+          <input type="submit" class="btn" value="View Summary">
+        </form>
+        <form action="/delete/{{ file_name[0] }}" method="POST">
+          <input type="submit" class="btn" value="Delete">
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+</ul>
+
+<iframe id="pdf-preview" width="80%" height="900px"></iframe>
+
+
+
+</html>

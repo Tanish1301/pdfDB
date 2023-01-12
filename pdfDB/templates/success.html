@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<script>
+  function setPdfPreview(fileId) {
+    var pdfPreview = document.getElementById('pdf-preview');
+    pdfPreview.src = '/preview/' + fileId;
+  }
+</script>
+
+</head>
+<h2>Success</h2>
+
+<h3>Uploaded files:</h3>
+<ul>
+  {% for file_name in file_names %}
+      <li>
+          {{ file_name[1] }}
+          <button type="button" class="btn btn-secondary" onclick="window.location.href = '/download/{{ file_name[0] }}'">Download</button>
+          <button type="button" class="btn btn-secondary" onclick="setPdfPreview({{ file_name[0] }}); return false;">Preview</button>
+          <form action="/delete/{{ file_name[0] }}" method="POST">
+              <button type="submit" class="btn btn-secondary">Delete</button>
+          </form>
+      </li>
+      <form method="POST" action="/send">
+        <label>Doctor's email address:</label>
+        <input type="email" name="doctor_email" required>
+        <a href="#" onclick="this.parentNode.submit(); return false;">Send file</a>
+      </form>
+  {% endfor %}
+</ul>
+
+<iframe id="pdf-preview" width="80%" height="900px"></iframe>
+
+
+
+</html>

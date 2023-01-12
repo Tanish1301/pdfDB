@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>PDF Upload</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.346/pdf.js"></script>
+
+  </head>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.pdf_file.label }} {{ form.pdf_file }}
+ 
+    <input type="checkbox" name="upload_to_db"> Upload to database
+    <br>
+    <form method="POST" action="/">
+      ...
+      <label for="new_filename">New Filename:</label>
+      <input type="text" id="new_filename" name="new_filename" placeholder="Enter a new filename">
+      ...
+      <button type="submit">Submit</button>
+    </form>
+
+    
+ 
+  </form>
+</html>

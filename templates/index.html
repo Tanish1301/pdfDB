@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <title>PDF Upload</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.346/pdf.js"></script>
+    <style>
+      /* Use a sans-serif font for the body text */
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      /* Center the form on the page */
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      /* Style the form fields */
+      input[type="file"], input[type="text"], input[type="checkbox"] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Style the submit button */
+      button[type="submit"] {
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Add some hover effects to the button */
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      label {
+      display: block; /* display the label as a block element */
+      font-size: 14px; /* set the font size to 14px */
+      }
+
+      textarea {
+      width: 90%; 
+      }
+      body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Style the heading */
+    h1 {
+      text-align: center;
+      color: #4caf50;
+    }
+    p {
+      margin: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    </style>
+  </head>
+  <h1>PANACE TEAM 8 CONSUMER HEALTH HISTORY</h1>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.pdf_file.label }} {{ form.pdf_file }}
+ 
+    <input type="checkbox" name="upload_to_db"> Upload Medical Report(4 GB, ONLY .PDF format available)
+    <br>
+    <form method="POST" action="/">
+      <label for="new_filename">Give Your Medical Report New Name:</label>
+      <input type="text" id="new_filename" name="new_filename" placeholder="Enter a new filename">
+      <label for="summary">Visit Summary:</label><br>
+      <textarea id="summary" name="summary" rows="20" cols="20"></textarea><br>
+      <button type="submit">Submit</button>
+    </form>
+
+    
+ 
+  </form>
+</html>

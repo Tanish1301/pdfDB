@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    /* Use a sans-serif font for the body text */
+    body {
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<h2>Allergies</h2>
+
+<ul>
+  {% for allergy in allergies %}
+      <li>{{ allergy[1] }}</li>
+  {% endfor %}
+</ul>
+
+</html>
