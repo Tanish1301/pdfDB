@@ -1,14 +1,20 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, make_response, send_file
 from flask_wtf import FlaskForm
 from wtforms import FileField, StringField
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 import mysql.connector
-from flask import make_response, send_file
 import PyPDF2
 from io import BytesIO
 import os
 
 app = Flask(__name__)
+
+# Generate a secret key or use your own
+app.config['SECRET_KEY'] = 'your_secret_key_here'
+
+# Initialize CSRF protection
+csrf = CSRFProtect(app)
 
 # Use the JAWSDB_URL environment variable provided by Heroku
 database_url = os.environ.get("JAWSDB_URL")
@@ -39,7 +45,7 @@ def index():
 
             if pdf_file and pdf_file.filename.endswith(".pdf"):
                 new_filename = request.form.get("new_filename")
-                summary = request.form.get("summary")  
+                summary = request.form.get("summary")
 
                 pdf_file.filename = secure_filename(new_filename + ".pdf")
                 pdf_data = pdf_file.read()
