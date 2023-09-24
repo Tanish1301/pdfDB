@@ -94,33 +94,5 @@ def view_summary(file_id):
     return render_template("view_summary.html", summary=summary)
 
 
-from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
-from smtplib import SMTP
-
-@app.route("/send", methods=["POST"])
-def send_file():
-    doctor_email = request.form.get("doctor_email")
-
-    cursor.execute("SELECT data FROM pdf_files ORDER BY id DESC LIMIT 1")
-    file_data = cursor.fetchone()[0]
-
-    msg = MIMEMultipart()
-    msg["Subject"] = "Your file"
-    msg["To"] = doctor_email
-
-    part = MIMEApplication(file_data, Name="myfile.pdf")
-    msg.attach(part)
-
-    smtp = SMTP("smtp.gmail.com", 587)
-    smtp.starttls()
-    smtp.login("pappunippu.420@gmail.com", "Nippu@123")
-    smtp.send_message(msg)
-    smtp.quit()
-
-    return "Success: File was sent to the doctor's email address."
-
-
-
 if __name__ == '__main__':
     app.run(debug = True)
