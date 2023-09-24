@@ -6,15 +6,14 @@ from werkzeug.utils import secure_filename
 import mysql.connector
 import PyPDF2
 from io import BytesIO
-import os
 
 app = Flask(__name__)
 
-# Generate a secret key or use your own
-app.config['SECRET_KEY'] = 'your_secret_key_here'
+import os
 
-# Initialize CSRF protection
-csrf = CSRFProtect(app)
+app.config['SECRET_KEY'] = os.urandom(24)
+
+
 
 # Use the JAWSDB_URL environment variable provided by Heroku
 database_url = os.environ.get("JAWSDB_URL")
