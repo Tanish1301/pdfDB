@@ -10,11 +10,20 @@ import os
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "sdfghjksdfghj"
+# Use the JAWSDB_URL environment variable provided by Heroku
+database_url = os.environ.get("JAWSDB_URL")
 
-# Use the DATABASE_URL environment variable provided by Heroku
-database_url = os.environ.get("DATABASE_URL")
-conn = mysql.connector.connect(database_url)
+# Parse the database URL to extract connection details
+db_config = {
+    "user": "l76yh8nnxlkwwdzh",
+    "password": "yro85n0x5jmrivtw",
+    "host": "i0rgccmrx3at3wv3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "port": 3306,
+    "database": "le36ofc2p7qp44z3"
+}
+
+# Connect to the database using the extracted configuration
+conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
 
 class PDFUploadForm(FlaskForm):
