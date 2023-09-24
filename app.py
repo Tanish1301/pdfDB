@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, make_response, send_file
+from flask import Flask, render_template, request, redirect, make_response
 from flask_wtf import FlaskForm
 from wtforms import FileField, StringField
 from flask_wtf.csrf import CSRFProtect
@@ -6,30 +6,45 @@ from werkzeug.utils import secure_filename
 import mysql.connector
 import PyPDF2
 from io import BytesIO
+import os
+import urllib.parse
 
 app = Flask(__name__)
-
-import os
-
 app.config['SECRET_KEY'] = os.urandom(24)
 
+# Use the provided connection string
+connection_string = "mysql://l76yh8nnxlkwwdzh:yro85n0x5jmrivtw@i0rgccmrx3at3wv3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/le36ofc2p7qp44z3"
 
-
-# Use the JAWSDB_URL environment variable provided by Heroku
-database_url = os.environ.get("JAWSDB_URL")
-
-# Parse the database URL to extract connection details
+# Parse the connection string to extract connection details
+db_url = urllib.parse.urlparse(connection_string)
 db_config = {
-    "user": "l76yh8nnxlkwwdzh",
-    "password": "yro85n0x5jmrivtw",
-    "host": "i0rgccmrx3at3wv3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "port": 3306,
-    "database": "le36ofc2p7qp44z3"
+    "user": db_url.username,
+    "password": db_url.password,
+    "host": db_url.hostname,
+    "port": db_url.port,
+    "database": db_url.path[1:],  # Remove the leading slash
 }
 
+# Function to create a database connection
+def create_db_connection():
+    return mysql.connector.connect(**db_config)
+
 # Connect to the database using the extracted configuration
-conn = mysql.connector.connect(**db_config)
+conn = create_db_connection()
 cursor = conn.cursor()
+
+# Create the 'pdf_files' table if it doesn't exist
+create_table_query = """
+CREATE TABLE IF NOT EXISTS pdf_files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    data LONGBLOB NOT NULL,
+    summary TEXT
+)
+"""
+
+cursor.execute(create_table_query)
+conn.commit()
 
 class PDFUploadForm(FlaskForm):
     pdf_file = FileField("PDF File")
@@ -75,7 +90,7 @@ def download(file_id):
     response.headers["Content-Disposition"] = "attachment; filename=myfile.pdf"
     return response
 
-@app.route('/preview/<int:file_id>')
+@app.route("/preview/<int:file_id>")
 def preview(file_id):
     cursor.execute("SELECT data FROM pdf_files WHERE id = %s", (file_id,))
     file_data = cursor.fetchone()
