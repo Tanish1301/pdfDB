@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS pdf_files (
 
 cursor.execute(create_table_query)
 conn.commit()
+print("Table 'pdf_files' created successfully")
+
 
 class PDFUploadForm(FlaskForm):
     pdf_file = FileField("PDF File")
