@@ -7,29 +7,24 @@ import mysql.connector
 import PyPDF2
 from io import BytesIO
 import os
-import urllib.parse
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
-# Use the provided connection string
-connection_string = "mysql://l76yh8nnxlkwwdzh:yro85n0x5jmrivtw@i0rgccmrx3at3wv3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/le36ofc2p7qp44z3"
-
-# Parse the connection string to extract connection details
-db_url = urllib.parse.urlparse(connection_string)
+# Define your MySQL database connection settings
 db_config = {
-    "user": db_url.username,
-    "password": db_url.password,
-    "host": db_url.hostname,
-    "port": db_url.port,
-    "database": db_url.path[1:],  # Remove the leading slash
+    "user": "admin",  # Replace with your MySQL username
+    "password": "password",  # Replace with your MySQL password
+    "host": "flaskdb.cl6iirlcqhf1.us-east-1.rds.amazonaws.com",    
+    "database": "mydatabase1",  # Replace with your database name
 }
 
 # Function to create a database connection
 def create_db_connection():
     return mysql.connector.connect(**db_config)
 
-# Connect to the database using the extracted configuration
+# Connect to the database using the provided configuration
 conn = create_db_connection()
 cursor = conn.cursor()
 
@@ -116,6 +111,8 @@ def view_summary(file_id):
     cursor.execute("SELECT summary FROM pdf_files WHERE id = %s", (file_id,))
     summary = cursor.fetchone()[0]
     return render_template("view_summary.html", summary=summary)
+
+csrf = CSRFProtect(app)
 
 if __name__ == '__main__':
     app.run(debug=True)

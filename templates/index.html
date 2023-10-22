@@ -69,17 +69,17 @@
 
     </style>
   </head>
-  <h1>PANACE TEAM 8 CONSUMER HEALTH HISTORY</h1>
+  <h1>CONTENT STORING PLATFORM</h1>
   <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     {{ form.pdf_file.label }} {{ form.pdf_file }}
  
-    <input type="checkbox" name="upload_to_db"> Upload Medical Report(4 GB, ONLY .PDF format available)
+    <input type="checkbox" name="upload_to_db"> UPLOAD PDF (4 GB, ONLY .PDF format available)
     <br>
     <form method="POST" action="/">
-      <label for="new_filename">Give Your Medical Report New Name:</label>
+      <label for="new_filename">NAME FILE: </label>
       <input type="text" id="new_filename" name="new_filename" placeholder="Enter a new filename">
-      <label for="summary">Visit Summary:</label><br>
+      <label for="summary">FILE SUMMARY: </label><br>
       <textarea id="summary" name="summary" rows="20" cols="20"></textarea><br>
       <button type="submit">Submit</button>
     </form>
